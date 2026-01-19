@@ -89,12 +89,9 @@ const Navbar = ({ lang, setLang }: { lang: LangType, setLang: (l: LangType) => v
     <nav className="fixed top-0 left-0 right-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/5">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <div className="flex items-center gap-2 group cursor-pointer">
-           <div className="w-10 h-10 border border-emerald-500/50 flex items-center justify-center relative overflow-hidden">
-             <div className="absolute inset-0 bg-emerald-500/10 scale-0 group-hover:scale-100 transition-transform" />
-             <span className="font-orbitron font-bold text-xl text-white">O</span>
-           </div>
+            
            <div className="hidden md:block">
-             <div className="text-xs font-mono-tech text-emerald-500 tracking-widest">OPERATOR</div>
+             <div className="text-xs font-mono-tech text-emerald-500 tracking-widest">DEV</div>
              <div className="font-bold text-white leading-none">OWEN</div>
            </div>
         </div>
@@ -262,10 +259,10 @@ const Hero = ({ lang }: { lang: LangType }) => {
                 <div className="absolute inset-0 border border-emerald-500/10 rounded-sm -rotate-3 scale-110" />
                 
                 {/* Image Container */}
-                <div className="w-full h-full overflow-hidden relative bg-[#0a0a0a] border border-white/10 shadow-[0_0_30px_rgba(16,185,129,0.15)]">
+                <div className="w-full h-full overflow-hidden relative border border-white/10 shadow-[0_0_30px_rgba(16,185,129,0.15)]">
                      <div className="absolute inset-0 bg-emerald-900/20 z-10 mix-blend-overlay" />
                      <img 
-                        src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1000&auto=format&fit=crop" 
+                        src="./public/owenlogo.png" 
                         alt="Tactical Developer" 
                         className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-700"
                      />

@@ -7,105 +7,104 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
+      :root {
+        --color-bg: #030014;
+        --color-primary: #6366f1;
+        --color-secondary: #0c22e9;
+        --color-accent: #22d3ee;
+      }
+      
       body {
-        background-color: #050505;
-        color: #e5e5e5;
-        font-family: 'Rajdhani', sans-serif;
-        cursor: none; /* Custom cursor handling */
+        background-color: var(--color-bg);
+        color: #e2e8f0;
+        font-family: 'Outfit', sans-serif;
+        cursor: default;
         overflow-x: hidden;
       }
       
+      /* Smooth Scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
         width: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: #0a0a0a;
+        background: #020617;
       }
       ::-webkit-scrollbar-thumb {
-        background: #10b981;
-        border-radius: 0px;
+        background: linear-gradient(to bottom, #016119, #0e2c6e);
+        border-radius: 999px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #059669;
+        background: linear-gradient(to bottom, #4338ca, #7e22ce);
       }
 
       /* Utilities */
-      .font-orbitron { font-family: 'Orbitron', sans-serif; }
-      .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+      .font-display { font-family: 'Outfit', sans-serif; }
+      .font-mono-code { font-family: 'JetBrains Mono', monospace; }
       
-      .tactical-grid {
-        background-image: 
-          linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
-        background-size: 40px 40px;
+      /* Backgrounds & Effects */
+      .bg-cosmos {
+        background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030014 50%);
+      }
+      
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .text-gradient {
+        background: linear-gradient(135deg, #22d3ee 0%, #818cf8 50%, #c084fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       /* Animations */
-      @keyframes scanline {
-        0% { transform: translateY(-100%); }
-        100% { transform: translateY(100%); }
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
       }
-      .animate-scanline {
-        animation: scanline 8s linear infinite;
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes pulse-glow {
+        0%, 100% { opacity: 0.5; transform: scale(1); }
+        50% { opacity: 0.8; transform: scale(1.05); }
+      }
+      .animate-pulse-glow {
+        animation: pulse-glow 4s ease-in-out infinite;
       }
 
       @keyframes marquee {
         0% { transform: translateX(0); }
         100% { transform: translateX(-50%); }
       }
-      @keyframes marquee-reverse {
-        0% { transform: translateX(-50%); }
-        100% { transform: translateX(0); }
-      }
+      
       .animate-marquee {
-        animation: marquee 30s linear infinite;
+        animation: marquee 40s linear infinite;
       }
       .animate-marquee-reverse {
-        animation: marquee-reverse 30s linear infinite;
+        animation: marquee 40s linear infinite reverse;
       }
-      
-      .glitch-effect {
-        position: relative;
-      }
-      .glitch-effect::before,
-      .glitch-effect::after {
-        content: attr(data-text);
+
+      /* Glow Effects */
+      .glow-point {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-      }
-      .glitch-effect::before {
-        left: 2px;
-        text-shadow: -1px 0 #ff00c1;
-        clip: rect(44px, 450px, 56px, 0);
-        animation: glitch-anim 5s infinite linear alternate-reverse;
-      }
-      .glitch-effect::after {
-        left: -2px;
-        text-shadow: -1px 0 #00fff9;
-        clip: rect(44px, 450px, 56px, 0);
-        animation: glitch-anim2 5s infinite linear alternate-reverse;
-      }
-      @keyframes glitch-anim {
-        0% { clip: rect(33px, 9999px, 11px, 0); }
-        20% { clip: rect(86px, 9999px, 9px, 0); }
-        40% { clip: rect(22px, 9999px, 65px, 0); }
-        60% { clip: rect(15px, 9999px, 89px, 0); }
-        80% { clip: rect(2px, 9999px, 12px, 0); }
-        100% { clip: rect(67px, 9999px, 4px, 0); }
-      }
-      @keyframes glitch-anim2 {
-        0% { clip: rect(12px, 9999px, 76px, 0); }
-        20% { clip: rect(54px, 9999px, 23px, 0); }
-        40% { clip: rect(33px, 9999px, 11px, 0); }
-        60% { clip: rect(89px, 9999px, 4px, 0); }
-        80% { clip: rect(2px, 9999px, 67px, 0); }
-        100% { clip: rect(5px, 9999px, 3px, 0); }
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
       }
     </style>
   <script type="importmap">
