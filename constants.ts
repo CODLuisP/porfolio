@@ -13,7 +13,7 @@ export const TRANSLATIONS = {
     },
     hero: {
       status: "Available for New Opportunities",
-      title: "OWEN",
+      title: "Alexander Cabrera (OWEN)",
       subtitle: "FULL STACK ENGINEER",
       separator: "|",
       exp: "BUILDING DIGITAL EXCELLENCE",
@@ -187,7 +187,7 @@ export const TRANSLATIONS = {
     },
     hero: {
       status: "Disponible para Nuevas Oportunidades",
-      title: "OWEN",
+      title: "Luis Alexander Cabrera (OWEN)",
       subtitle: "INGENIERO FULL STACK",
       separator: "|",
       exp: "CONSTRUYENDO EXCELENCIA DIGITAL",
