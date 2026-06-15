@@ -32,6 +32,7 @@ import {
   TacticalCard,
   TacticalButton,
 } from "./components/TacticalUI";
+import CodeBackground from "./components/CodeBackground";
 
 type LangType = "en" | "es";
 
@@ -247,88 +248,8 @@ const Hero = ({ lang }: { lang: LangType }) => {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/20 via-black to-black" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-emerald-950/30 via-transparent to-transparent" />
 
-      {/* Grid Patterns - Beautiful Gray Grids */}
-      <div className="absolute inset-0 opacity-20">
-        {/* Main Grid - Large */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-            linear-gradient(to right, rgba(156, 163, 175, 0.15) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(156, 163, 175, 0.15) 1px, transparent 1px)
-          `,
-            backgroundSize: "80px 80px",
-          }}
-        />
-
-        {/* Medium Grid */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-            linear-gradient(to right, rgba(107, 114, 128, 0.1) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(107, 114, 128, 0.1) 1px, transparent 1px)
-          `,
-            backgroundSize: "40px 40px",
-          }}
-        />
-
-        {/* Small Grid - Detail */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-            linear-gradient(to right, rgba(75, 85, 99, 0.08) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(75, 85, 99, 0.08) 1px, transparent 1px)
-          `,
-            backgroundSize: "20px 20px",
-          }}
-        />
-      </div>
-
-      {/* Diagonal Grid Pattern */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage: `
-          repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 40px,
-            rgba(156, 163, 175, 0.15) 40px,
-            rgba(156, 163, 175, 0.15) 41px
-          ),
-          repeating-linear-gradient(
-            -45deg,
-            transparent,
-            transparent 40px,
-            rgba(156, 163, 175, 0.15) 40px,
-            rgba(156, 163, 175, 0.15) 41px
-          )
-        `,
-        }}
-      />
-
-      {/* Dots Pattern */}
-      <div
-        className="absolute inset-0 opacity-15"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(156, 163, 175, 0.2) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
-        }}
-      />
-
-      {/* Accent Grid Lines - Emerald */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-emerald-500/30 to-transparent" />
-        <div className="absolute top-0 left-2/4 w-px h-full bg-gradient-to-b from-transparent via-emerald-500/20 to-transparent" />
-        <div className="absolute top-0 left-3/4 w-px h-full bg-gradient-to-b from-transparent via-emerald-500/30 to-transparent" />
-
-        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
-        <div className="absolute top-2/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
-        <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
-      </div>
+      {/* Minimalist Three.js programming-symbols background */}
+      <CodeBackground />
 
       <div className="absolute inset-0 bg-scanline opacity-5 pointer-events-none" />
 
@@ -481,10 +402,6 @@ const Hero = ({ lang }: { lang: LangType }) => {
                 <div className="absolute bottom-4 left-4 w-12 h-12 border-b-2 border-l-2 border-emerald-500/60" />
                 <div className="absolute top-4 left-4 w-8 h-8 border-t border-l border-emerald-500/40" />
                 <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-emerald-500/40" />
-
-                {/* Crosshair with Gradient */}
-                <div className="absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
-                <div className="absolute left-1/2 top-0 w-[2px] h-full bg-gradient-to-b from-transparent via-emerald-500/30 to-transparent" />
 
                 {/* Scanning Line Animation */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent animate-scan" />
