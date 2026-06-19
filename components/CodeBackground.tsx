@@ -27,6 +27,20 @@ const SYMBOLS = [
   "grep",
   "cd ~",
   "ls -la",
+  "0",
+  "1",
+  "0",
+  "1",
+  "0",
+  "1",
+  "01",
+  "10",
+  "00",
+  "11",
+  "101",
+  "010",
+  "110",
+  "001",
 ];
 
 // Builds a transparent canvas texture for a single symbol.
@@ -81,7 +95,7 @@ const CodeBackground: React.FC = () => {
       const material = new THREE.SpriteMaterial({
         map: texture,
         transparent: true,
-        opacity: 0.04 + Math.random() * 0.1,
+        opacity: 0.04 + Math.random() * 0.05,
         depthWrite: false,
       });
       const sprite = new THREE.Sprite(material);
@@ -90,7 +104,7 @@ const CodeBackground: React.FC = () => {
         (Math.random() - 0.5) * 24,
         (Math.random() - 0.5) * 20
       );
-      const scale = 1.2 + Math.random() * 2.2;
+      const scale = 0.7 + Math.random() * 1.3;
       sprite.scale.set(scale, scale, 1);
       scene.add(sprite);
       sprites.push(sprite);

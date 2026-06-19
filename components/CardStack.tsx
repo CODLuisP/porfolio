@@ -314,23 +314,18 @@ export default function CardStack() {
   const frontFaceRefs = useRef<(HTMLDivElement | null)[]>([]);
   const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
   const shineRefs = useRef<(HTMLDivElement | null)[]>([]);
-  // One tick fn per scene — called from main RAF so there's only 1 loop total
   const sceneTicksRef = useRef<((t: number) => void)[]>(Array(5).fill(() => {}));
   const frameId = useRef<number>(0);
   const lastTime = useRef<number>(-1);
-
   const progress = useRef<number>(0);
-  // rawX/rawY = pixels from window center; targetX/targetY = normalized to card dims in [-1,1]
   const mouse = useRef({ x: 0, y: 0, targetX: 0, targetY: 0, vx: 0, vy: 0, rawX: 0, rawY: 0 });
 
-  const [metrics, setMetrics] = useState({
-    cardW: 336,
-    cardH: 211,
-  });
+  // metricsRef lets renderLoop always read the latest values without stale closure
+  const metricsRef = useRef({ cardW: 336, cardH: 211 });
+  const [metrics, setMetrics] = useState({ cardW: 336, cardH: 211 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      // Store raw pixel offset from window center — normalized against card dims in renderLoop
       mouse.current.rawX = e.clientX - window.innerWidth / 2;
       mouse.current.rawY = e.clientY - window.innerHeight / 2;
     };
@@ -355,6 +350,7 @@ export default function CardStack() {
       cardW = Math.round(cardW * heightFactor);
       cardW = Math.min(336, Math.max(150, cardW));
       const cardH = Math.round(cardW / 1.5925);
+      metricsRef.current = { cardW, cardH };
       setMetrics({ cardW, cardH });
     };
     handleResize();
@@ -362,38 +358,33 @@ export default function CardStack() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Smooth vertical depth-scroll: cards flow upward continuously, no face flip.
-  // Center card pops forward; adjacent cards recede into depth with scale + opacity falloff.
-  // Animation is time-based (delta seconds) so speed is identical at any refresh rate.
-  const renderLoop = (timestamp: number) => {
+  // renderLoopRef always holds the latest render function — RAF never restarts
+  const renderLoopRef = useRef<(timestamp: number) => void>(() => {});
+  renderLoopRef.current = (timestamp: number) => {
     if (lastTime.current < 0) lastTime.current = timestamp;
     const dt = Math.min((timestamp - lastTime.current) / 1000, 0.05);
     lastTime.current = timestamp;
 
     progress.current += dt * 0.34;
 
-    // Tick all Three.js scenes from this single RAF — eliminates 5 competing RAF loops
     const elapsed = performance.now() / 1000;
     for (let j = 0; j < cardCount; j++) sceneTicksRef.current[j]?.(elapsed);
 
-    // Normalize raw pixel offset against card half-dims so ±1 = card edge (full tilt range on card)
+    const { cardW, cardH } = metricsRef.current;
     const mx = mouse.current;
-    mx.targetX = Math.max(-1, Math.min(1, mx.rawX / (metrics.cardW / 2)));
-    mx.targetY = Math.max(-1, Math.min(1, mx.rawY / (metrics.cardH / 2)));
+    mx.targetX = Math.max(-1, Math.min(1, mx.rawX / (cardW / 2)));
+    mx.targetY = Math.max(-1, Math.min(1, mx.rawY / (cardH / 2)));
 
-    // Spring physics: k=38 stiffness, b=11 damping (slightly underdamped → natural settle)
+    // Spring physics: k=38 stiffness, b=11 damping
     mx.vx += ((mx.targetX - mx.x) * 38 - mx.vx * 11) * dt;
     mx.vy += ((mx.targetY - mx.y) * 38 - mx.vy * 11) * dt;
     mx.x += mx.vx * dt;
     mx.y += mx.vy * dt;
 
-    const { cardH } = metrics;
-
     for (let i = 0; i < cardCount; i++) {
       const card = cardsRefs.current[i];
       if (!card) continue;
 
-      // Circular offset from the scrolling active position
       let offset = i - (progress.current % cardCount);
       const half = cardCount / 2;
       while (offset > half) offset -= cardCount;
@@ -401,47 +392,31 @@ export default function CardStack() {
 
       const absOffset = Math.abs(offset);
 
-      // Hide cards near the wrap boundary so the teleport is never visible
       if (absOffset >= half - 0.05) {
         card.style.opacity = '0';
         card.style.zIndex = '0';
         continue;
       }
 
-      // ── Vertical position ──────────────────────────────────────────────
-      // Spacing = 1.08 * cardH so adjacent cards never visually overlap the
-      // center card (center apparent half-height ≈ 0.53·cardH, adjacent ≈ 0.46·cardH,
-      // sum 0.99 → 1.08 gives ~18px gap and eliminates the "pop from behind" artifact).
       const sign = offset < 0 ? -1 : 1;
       let y: number;
       if (absOffset <= 1) {
         const e = absOffset * absOffset * (3 - 2 * absOffset);
         y = sign * e * cardH * 1.08;
       } else if (absOffset <= 2) {
-        const t = absOffset - 1; // t ∈ [0,1] ✓
+        const t = absOffset - 1;
         const e = t * t * (3 - 2 * t);
         y = sign * (cardH * 1.08 + e * cardH * 0.60);
       } else {
-        // Linear continuation past slot 2 — monotonically away from center
         y = sign * (cardH * 1.68 + (absOffset - 2) * cardH * 0.55);
       }
 
-      // ── Depth (Z) ──────────────────────────────────────────────────────
-      // center=60, adjacent=15, far=-30. Matched to the y-spacing so the
-      // perspective-magnified center card still doesn't touch adjacent cards.
       const z = 60 - Math.min(absOffset, 2) * 45;
-
-      // ── Scale ──────────────────────────────────────────────────────────
-      // center=1.0, adjacent=0.90, far=0.80. Gentler than before (was 0.86/0.72).
       const scale = Math.max(0.80, 1 - Math.min(absOffset, 2) * 0.10);
-
-      // ── Opacity ────────────────────────────────────────────────────────
       const opacity = Math.max(0, 1 - Math.max(0, absOffset - 0.7) * 0.78);
-
-      // ── Mouse parallax — strongest on center card, zero beyond ±0.55 ──
       const centerW = Math.max(0, 1 - absOffset * 1.8);
-      const tiltX = -mouse.current.y * 8 * centerW;
-      const tiltY = mouse.current.x * 14 * centerW;
+      const tiltX = -mx.y * 8 * centerW;
+      const tiltY = mx.x * 14 * centerW;
 
       card.style.transform =
         `translateY(${y.toFixed(1)}px) translateZ(${z.toFixed(1)}px) ` +
@@ -462,9 +437,7 @@ export default function CardStack() {
       const shine = shineRefs.current[i];
       if (shine) {
         if (centerW > 0.01) {
-          const sx = (mouse.current.x * metrics.cardW * 0.38).toFixed(1);
-          const sy = (mouse.current.y * metrics.cardH * 0.30).toFixed(1);
-          shine.style.transform = `translate(${sx}px, ${sy}px)`;
+          shine.style.transform = `translate(${(mx.x * cardW * 0.38).toFixed(1)}px, ${(mx.y * cardH * 0.30).toFixed(1)}px)`;
           shine.style.opacity = (centerW * 0.75).toFixed(3);
         } else {
           shine.style.opacity = '0';
@@ -473,16 +446,16 @@ export default function CardStack() {
     }
   };
 
+  // RAF starts once and never restarts — no jank on resize
   useEffect(() => {
     lastTime.current = -1;
     const tick = (ts: number) => {
-      renderLoop(ts);
+      renderLoopRef.current(ts);
       frameId.current = requestAnimationFrame(tick);
     };
     frameId.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameId.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [metrics]);
+  }, []);
 
   return (
     <div className="absolute inset-0 text-white flex items-center justify-center overflow-hidden select-none">
@@ -512,6 +485,7 @@ export default function CardStack() {
                   width: `${metrics.cardW}px`,
                   height: `${metrics.cardH}px`,
                   transformStyle: 'flat',
+                  willChange: 'transform, opacity',
                 }}
               >
                 {/* FRONT FACE */}
