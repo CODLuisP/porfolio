@@ -29,8 +29,8 @@ function CardScene({ type, accent, onRegister }: { type: SceneType; accent: stri
     const camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 100);
     camera.position.z = 5;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
+    renderer.setPixelRatio(1);
     renderer.setSize(width, height);
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
@@ -367,9 +367,6 @@ export default function CardStack() {
 
     progress.current += dt * 0.34;
 
-    const elapsed = performance.now() / 1000;
-    for (let j = 0; j < cardCount; j++) sceneTicksRef.current[j]?.(elapsed);
-
     const { cardW, cardH } = metricsRef.current;
     const mx = mouse.current;
     mx.targetX = Math.max(-1, Math.min(1, mx.rawX / (cardW / 2)));
@@ -381,15 +378,27 @@ export default function CardStack() {
     mx.x += mx.vx * dt;
     mx.y += mx.vy * dt;
 
+    // Pre-compute offsets to know which scenes are visible before ticking them
+    const offsets: number[] = [];
+    const half = cardCount / 2;
+    for (let i = 0; i < cardCount; i++) {
+      let offset = i - (progress.current % cardCount);
+      while (offset > half) offset -= cardCount;
+      while (offset < -half) offset += cardCount;
+      offsets.push(offset);
+    }
+
+    // Only tick Three.js scenes for cards that are actually visible — biggest GPU win
+    const elapsed = performance.now() / 1000;
+    for (let j = 0; j < cardCount; j++) {
+      if (Math.abs(offsets[j]) < half - 0.05) sceneTicksRef.current[j]?.(elapsed);
+    }
+
     for (let i = 0; i < cardCount; i++) {
       const card = cardsRefs.current[i];
       if (!card) continue;
 
-      let offset = i - (progress.current % cardCount);
-      const half = cardCount / 2;
-      while (offset > half) offset -= cardCount;
-      while (offset < -half) offset += cardCount;
-
+      const offset = offsets[i];
       const absOffset = Math.abs(offset);
 
       if (absOffset >= half - 0.05) {
@@ -399,6 +408,7 @@ export default function CardStack() {
       }
 
       const sign = offset < 0 ? -1 : 1;
+
       let y: number;
       if (absOffset <= 1) {
         const e = absOffset * absOffset * (3 - 2 * absOffset);

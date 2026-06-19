@@ -78,7 +78,7 @@ const CodeBackground: React.FC = () => {
     camera.position.z = 18;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(1);
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
