@@ -33,6 +33,7 @@ import {
   TacticalButton,
 } from "./components/TacticalUI";
 import CodeBackground from "./components/CodeBackground";
+import CardStack from "./components/CardStack";
 
 type LangType = "en" | "es";
 
@@ -339,147 +340,84 @@ const Hero = ({ lang }: { lang: LangType }) => {
             </a>
           </div>
 
-
           <div>
-  <h2 className="mb-3 text-xl font-bold text-white">
-    Sobre mí
-  </h2>
+            <h2 className="mb-3 text-xl font-bold text-white">Sobre mí</h2>
 
-  <p className="text-sm leading-relaxed text-white/80">
-    Soy un <span className="font-semibold text-emerald-400">desarrollador Full Stack</span> con
-    más de <span className="font-semibold text-emerald-400">2 años de experiencia</span> en el
-    desarrollo de aplicaciones web modernas. Trabajo tanto en el frontend como en el backend,
-    creando soluciones eficientes, escalables y enfocadas en una buena experiencia de usuario.
-  </p>
+            <p className="text-sm leading-relaxed text-white/80">
+              Soy un{" "}
+              <span className="font-semibold text-emerald-400">
+                desarrollador Full Stack
+              </span>{" "}
+              con más de{" "}
+              <span className="font-semibold text-emerald-400">
+                2 años de experiencia
+              </span>{" "}
+              en el desarrollo de aplicaciones web modernas. Trabajo tanto en el
+              frontend como en el backend, creando soluciones eficientes,
+              escalables y enfocadas en una buena experiencia de usuario.
+            </p>
 
-  <p className="mt-3 text-sm leading-relaxed text-white/80">
-    Me considero una persona inquieta y en constante aprendizaje, siempre explorando nuevas
-    tecnologías y buenas prácticas para mejorar la calidad del software que desarrollo.
-    Disfruto transformar ideas en productos funcionales y bien diseñados.
-  </p>
-</div>
+            <p className="mt-3 text-sm leading-relaxed text-white/80">
+              Me considero una persona inquieta y en constante aprendizaje,
+              siempre explorando nuevas tecnologías y buenas prácticas para
+              mejorar la calidad del software que desarrollo. Disfruto
+              transformar ideas en productos funcionales y bien diseñados.
+            </p>
+          </div>
         </motion.div>
 
-        {/* Right: Developer Tactical Image */}
+        {/* Right: 3D Card Stack */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="relative flex justify-center lg:justify-end"
         >
-          <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
-            {/* Animated Background Rings */}
-            <div className="absolute inset-0 -z-10">
-              <div
-                className="absolute inset-0 border-2 border-emerald-500/10 rounded-full animate-ping"
-                style={{ animationDuration: "3s" }}
-              />
-              <div
-                className="absolute inset-4 border border-emerald-500/20 rounded-full animate-pulse"
-                style={{ animationDuration: "2s" }}
-              />
-            </div>
-
-            {/* Decorative Hex/Border - Enhanced */}
-            <div className="absolute inset-0 border-2 border-emerald-500/40 rounded-lg rotate-6 scale-105 transition-all duration-500 hover:rotate-3 hover:border-emerald-500/60" />
-            <div className="absolute inset-0 border border-emerald-500/20 rounded-lg -rotate-6 scale-110 transition-all duration-500 hover:-rotate-3 hover:border-emerald-500/40" />
-
-            {/* Image Container - Enhanced */}
-            <div className="w-full h-full overflow-hidden relative rounded-lg border-2 border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.25)] group">
-              {/* Gradient Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/30 via-transparent to-black/50 z-10 mix-blend-overlay" />
-
-              <img
-                src="./public/owenlogo.png"
-                alt="Tactical Developer"
-                className="w-full h-full object-cover grayscale-[0.7] contrast-125 brightness-90 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
-              />
-
-              {/* Overlay HUD lines - Enhanced */}
-              <div className="absolute inset-0 z-20 pointer-events-none">
-                {/* Corner Brackets - Larger */}
-                <div className="absolute top-4 right-4 w-12 h-12 border-t-2 border-r-2 border-emerald-500/60" />
-                <div className="absolute bottom-4 left-4 w-12 h-12 border-b-2 border-l-2 border-emerald-500/60" />
-                <div className="absolute top-4 left-4 w-8 h-8 border-t border-l border-emerald-500/40" />
-                <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-emerald-500/40" />
-
-                {/* Scanning Line Animation */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent animate-scan" />
-              </div>
-
-              {/* Glow Effect on Hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </div>
-
-            {/* Floating Badge - Enhanced */}
-            <div className="absolute -bottom-8 -right-8 bg-gradient-to-br from-black via-emerald-950/90 to-black border-2 border-emerald-500 p-3 px-5 shadow-[0_0_30px_rgba(16,185,129,0.3)] backdrop-blur-sm z-30 rounded-lg">
-              <div className="text-[10px] font-mono-tech text-emerald-400/70 uppercase tracking-widest">
-                Edad
-              </div>
-              <div className="text-emerald-400 font-bold font-orbitron text-lg">
-                25 años
-              </div>
-            </div>
-
-            {/* Online Status Badge */}
-            <div className="absolute -top-6 -left-6 bg-gradient-to-br from-emerald-950/90 to-black border border-emerald-500/50 p-2 px-4 shadow-[0_0_20px_rgba(16,185,129,0.2)] backdrop-blur-sm z-30 rounded-lg">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                <span className="text-xs font-mono-tech text-emerald-400 uppercase tracking-wider">
-                  Online
-                </span>
-              </div>
-            </div>
+<div className="relative w-full h-[70vh]">
+            <CardStack />
           </div>
         </motion.div>
-
-      
-
-
-
       </div>
-
-   
 
       {/* HUD Elements - Enhanced */}
 
-    {/* HUD Elements - Enhanced - FUERA del div azul */}
-<div className="absolute bottom-24 left-10 hidden md:block font-mono-tech text-xs text-gray-600 z-30">
-  <div className="space-y-1 border-l-2 border-emerald-500/30 pl-4">
-    <div className="flex items-center gap-2">
-      <span className="text-emerald-500">▸</span>
-      <span>{t.coords}</span>
-    </div>
-    <div className="flex items-center gap-2">
-      <span className="text-emerald-500">▸</span>
-      <span>{t.system_status}</span>
-    </div>
-  </div>
-</div>
+      {/* HUD Elements - Enhanced - FUERA del div azul */}
+      <div className="absolute bottom-24 left-10 hidden md:block font-mono-tech text-xs text-gray-600 z-30">
+        <div className="space-y-1 border-l-2 border-emerald-500/30 pl-4">
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-500">▸</span>
+            <span>{t.coords}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-500">▸</span>
+            <span>{t.system_status}</span>
+          </div>
+        </div>
+      </div>
 
-<div className="absolute bottom-24 right-10 hidden md:block z-30">
-  <div className="flex items-end gap-1">
-    {[1, 2, 3, 4, 5].map((i) => (
-      <div
-        key={i}
-        className="w-1.5 bg-gradient-to-t from-emerald-500 to-emerald-300 animate-pulse"
-        style={{
-          height: `${i * 8}px`,
-          animationDelay: `${i * 0.15}s`,
-          animationDuration: "2s",
-        }}
-      />
-    ))}
-  </div>
-</div>
+      <div className="absolute bottom-24 right-10 hidden md:block z-30">
+        <div className="flex items-end gap-1">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div
+              key={i}
+              className="w-1.5 bg-gradient-to-t from-emerald-500 to-emerald-300 animate-pulse"
+              style={{
+                height: `${i * 8}px`,
+                animationDelay: `${i * 0.15}s`,
+                animationDuration: "2s",
+              }}
+            />
+          ))}
+        </div>
+      </div>
 
-{/* Scroll Indicator */}
-<div className="absolute bottom-20 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 animate-bounce z-30">
-  <div className="text-xs font-mono-tech text-emerald-500/50 uppercase tracking-wider">
-    Scroll
-  </div>
-  <ChevronRight size={16} className="text-emerald-500/50 rotate-90" />
-</div>
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 animate-bounce z-30">
+        <div className="text-xs font-mono-tech text-emerald-500/50 uppercase tracking-wider">
+          Scroll
+        </div>
+        <ChevronRight size={16} className="text-emerald-500/50 rotate-90" />
+      </div>
     </section>
   );
 };
